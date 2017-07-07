@@ -8,4 +8,6 @@ class Game {
 
   private:
     bool running = true;
+    int x = 10;
+    int y = 10;
 };
