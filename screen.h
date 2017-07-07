@@ -18,5 +18,6 @@ class Screen {
 
     // Textures
     SDL_Texture *bgTexture;
+    SDL_Texture *floorTexture;
     SDL_Texture *birdTexture;
 };

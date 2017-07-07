@@ -20,15 +20,21 @@ bool Screen::initialize() {
     return false;
   }
 
-  bgTexture = IMG_LoadTexture(ren, "res/background.png");
+  bgTexture = IMG_LoadTexture(ren, "res/layer-1.png");
   if (bgTexture == nullptr) {
     cleanup(ren, win);
     return false;
   }
 
+  floorTexture = IMG_LoadTexture(ren, "res/layer-2.png");
+  if (floorTexture == nullptr) {
+    cleanup(bgTexture, ren, win);
+    return false;
+  }
+
   birdTexture = IMG_LoadTexture(ren, "res/bat-1.png");
   if (birdTexture == nullptr) {
-    cleanup(bgTexture, ren, win);
+    cleanup(bgTexture, floorTexture, ren, win);
     return false;
   }
 
@@ -36,7 +42,7 @@ bool Screen::initialize() {
 }
 
 void Screen::close() {
-  cleanup(bgTexture, ren, win);
+  cleanup(bgTexture, floorTexture, birdTexture, ren, win);
   SDL_Quit();
 }
 
@@ -45,8 +51,10 @@ void Screen::clear() {
 }
 
 void Screen::drawBackground(int position) {
-  const SDL_Rect rect { position % 720, 0, 640, 360 };
+  SDL_Rect rect { (position / 2) % 720, 0, 640, 360 };
   SDL_RenderCopy(ren, bgTexture, &rect, NULL);
+  rect = { position % 720, 0, 640, 360 };
+  SDL_RenderCopy(ren, floorTexture, &rect, NULL);
 }
 
 void Screen::drawBird(int x, int y) {
