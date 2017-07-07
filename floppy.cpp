@@ -24,6 +24,7 @@ int main(int, char**) {
 
     screen.clear();
     screen.drawBackground();
+    screen.drawBird(10, 10);
     screen.present();
 
     SDL_Delay(16);

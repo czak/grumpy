@@ -27,6 +27,12 @@ bool Screen::initialize() {
     return false;
   }
 
+  birdTexture = IMG_LoadTexture(ren, "res/frame-0.png");
+  if (birdTexture == nullptr) {
+    cleanup(bgTexture, ren, win);
+    return false;
+  }
+
   return true;
 }
 
@@ -41,6 +47,11 @@ void Screen::clear() {
 
 void Screen::drawBackground() {
   SDL_RenderCopy(ren, bgTexture, NULL, NULL);
+}
+
+void Screen::drawBird(int x, int y) {
+  SDL_Rect birdRect { x, y, 64, 56 };
+  SDL_RenderCopy(ren, birdTexture, NULL, &birdRect);
 }
 
 void Screen::present() {
