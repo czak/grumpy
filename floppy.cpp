@@ -1,8 +1,7 @@
 #include <iostream>
-#include <SDL.h>
 
 #include "screen.h"
-#include "cleanup.h"
+#include "game.h"
 
 int main(int, char**) {
   Screen screen;
@@ -13,21 +12,11 @@ int main(int, char**) {
     return 1;
   }
 
-  SDL_Event event;
-  bool active = true;
+  Game game;
 
-  while (active) {
-    while (SDL_PollEvent(&event)) {
-      if (event.type != SDL_KEYDOWN) continue;
-      active = false;
-    }
-
-    screen.clear();
-    screen.drawBackground();
-    screen.drawBird(10, 10);
-    screen.present();
-
-    SDL_Delay(16);
+  while (game.isRunning()) {
+    game.handleEvents();
+    game.render(screen);
   }
 
   screen.close();
