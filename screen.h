@@ -6,7 +6,7 @@ class Screen {
     void close();
 
     void clear();
-    void drawBackground();
+    void drawBackground(int);
     void drawBird(int x, int y);
     void present();
 

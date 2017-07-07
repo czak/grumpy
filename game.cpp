@@ -29,9 +29,13 @@ void Game::handleEvents() {
   }
 }
 
+void Game::update() {
+  position++;
+}
+
 void Game::render(Screen& screen) {
   screen.clear();
-  screen.drawBackground();
+  screen.drawBackground(position);
   screen.drawBird(x, y);
   screen.present();
 }
