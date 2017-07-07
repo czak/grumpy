@@ -1,7 +1,13 @@
 #include <iostream>
 #include <SDL.h>
+#include <SDL_image.h>
 
 #include "cleanup.h"
+
+struct Bird {
+  SDL_Rect rect {0, 0, 64, 56};
+  SDL_Texture* textures[4];
+};
 
 int main(int, char**) {
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -9,7 +15,7 @@ int main(int, char**) {
     return 1;
   }
 
-  SDL_Window *win = SDL_CreateWindow("Floppy", 100, 100, 640, 480, SDL_WINDOW_SHOWN);
+  SDL_Window *win = SDL_CreateWindow("Floppy", 1270, 690, 640, 360, SDL_WINDOW_SHOWN);
   if (win == nullptr) {
     std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << "\n";
     SDL_Quit();
@@ -24,32 +30,47 @@ int main(int, char**) {
     return 1;
   }
 
-  std::string imagePath = "hello.bmp";
-  SDL_Surface *bmp = SDL_LoadBMP(imagePath.c_str());
-  if (bmp == nullptr) {
+  SDL_Texture *bg = IMG_LoadTexture(ren, "res/full-background.png");
+  if (bg == nullptr) {
     cleanup(ren, win);
-    std::cout << "SDL_LoadBMP Error: " << SDL_GetError() << "\n";
+    std::cout << "IMG_LoadTexture Error: " << SDL_GetError() << "\n";
     SDL_Quit();
     return 1;
   }
 
-  SDL_Texture *tex = SDL_CreateTextureFromSurface(ren, bmp);
-  cleanup(bmp);
-  if (tex == nullptr) {
-    cleanup(ren, win);
-    std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << "\n";
-    SDL_Quit();
-    return 1;
+  Bird bird;
+
+  std::string basePath = "res/frame-";
+  for (auto i : {0, 1, 2, 3}) {
+    auto path = basePath + std::to_string(i) + ".png";
+    bird.textures[i] = IMG_LoadTexture(ren, path.c_str());
+    if (bird.textures[i] == nullptr) {
+      cleanup(bg, ren, win);
+      std::cout << "IMG_LoadTexture Error: " << SDL_GetError() << "\n";
+      SDL_Quit();
+      return 1;
+    }
   }
 
-  for (int i = 0; i < 1; ++i) {
+  int frame = 0;
+  bool isActive = true;
+  while (isActive) {
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+      if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
+        isActive = false;
+      }
+    }
+
     SDL_RenderClear(ren);
-    SDL_RenderCopy(ren, tex, NULL, NULL);
+    SDL_RenderCopy(ren, bg, NULL, NULL);
+    SDL_RenderCopy(ren, bird.textures[(++frame/3)%4], NULL, &bird.rect);
     SDL_RenderPresent(ren);
-    SDL_Delay(1000);
+
+    SDL_Delay(16);
   }
 
-  cleanup(tex, ren, win);
+  cleanup(bg, bird.textures[0], bird.textures[1], bird.textures[2], bird.textures[3], ren, win);
   SDL_Quit();
   return 0;
 }
