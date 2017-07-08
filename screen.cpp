@@ -38,6 +38,12 @@ bool Screen::initialize() {
     return false;
   }
 
+  brickTexture = IMG_LoadTexture(ren, "res/brick.png");
+  if (brickTexture == nullptr) {
+    cleanup(bgTexture, floorTexture, birdTexture, ren, win);
+    return false;
+  }
+
   return true;
 }
 
@@ -60,6 +66,11 @@ void Screen::drawBackground(int position) {
 void Screen::drawBird(int x, int y) {
   const SDL_Rect birdRect { x, y, 64, 65 };
   SDL_RenderCopy(ren, birdTexture, NULL, &birdRect);
+}
+
+void Screen::drawObstacle(int x) {
+  const SDL_Rect rect {x, 100, 64, 32};
+  SDL_RenderCopy(ren, brickTexture, NULL, &rect);
 }
 
 void Screen::present() {

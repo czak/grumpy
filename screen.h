@@ -8,6 +8,7 @@ class Screen {
     void clear();
     void drawBackground(int);
     void drawBird(int x, int y);
+    void drawObstacle(int x);
     void present();
 
     const char* getError();
@@ -20,4 +21,5 @@ class Screen {
     SDL_Texture *bgTexture;
     SDL_Texture *floorTexture;
     SDL_Texture *birdTexture;
+    SDL_Texture *brickTexture;
 };
