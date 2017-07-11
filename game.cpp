@@ -3,6 +3,19 @@
 #include "game.h"
 #include "screen.h"
 
+Game::Game() {
+  obstacles[0].x = 200;
+  obstacles[0].numBricks = 3;
+  obstacles[1].x = 400;
+  obstacles[1].numBricks = 6;
+  obstacles[2].x = 600;
+  obstacles[2].numBricks = 4;
+  obstacles[3].x = 800;
+  obstacles[3].numBricks = 7;
+  obstacles[4].x = 1000;
+  obstacles[4].numBricks = 5;
+}
+
 void Game::handleEvents() {
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
@@ -37,10 +50,9 @@ void Game::render(Screen& screen) {
   screen.clear();
   screen.drawBackground(position);
   screen.drawBird(x, y);
-  screen.drawObstacle(200, 3, position);
-  screen.drawObstacle(400, 5, position);
-  screen.drawObstacle(600, 4, position);
-  screen.drawObstacle(800, 7, position);
+  for (auto o : obstacles) {
+    screen.drawObstacle(o.x, o.numBricks, position);
+  }
   screen.present();
 }
 
