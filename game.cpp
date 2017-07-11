@@ -1,19 +1,16 @@
 #include <SDL.h>
+#include <list>
+#include <cstdlib>
 
 #include "game.h"
 #include "screen.h"
 
 Game::Game() {
-  obstacles[0].x = 200;
-  obstacles[0].numBricks = 3;
-  obstacles[1].x = 400;
-  obstacles[1].numBricks = 6;
-  obstacles[2].x = 600;
-  obstacles[2].numBricks = 4;
-  obstacles[3].x = 800;
-  obstacles[3].numBricks = 7;
-  obstacles[4].x = 1000;
-  obstacles[4].numBricks = 5;
+  obstacles.push_back({ 200, std::rand() % 10 });
+  obstacles.push_back({ 400, std::rand() % 10 });
+  obstacles.push_back({ 600, std::rand() % 10 });
+  obstacles.push_back({ 800, std::rand() % 10 });
+  obstacles.push_back({ 1000, std::rand() % 10 });
 }
 
 void Game::handleEvents() {
@@ -44,6 +41,14 @@ void Game::handleEvents() {
 
 void Game::update() {
   position++;
+
+  // Do we need a new obstacle?
+  auto first = obstacles.front(); 
+  auto last = obstacles.back(); 
+  if (first.x - position + 64 < 0) {
+    obstacles.pop_front();
+    obstacles.push_back({ last.x + 200, std::rand() % 9 });
+  }
 }
 
 void Game::render(Screen& screen) {
