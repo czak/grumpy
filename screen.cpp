@@ -63,8 +63,12 @@ void Screen::drawBackground(int position) {
   SDL_RenderCopy(ren, floorTexture, &rect, NULL);
 }
 
-void Screen::drawBird(int x, int y) {
+void Screen::drawBird(int x, int y, bool highlight = false) {
   const SDL_Rect birdRect { x, y, 64, 65 };
+  if (highlight) {
+    SDL_SetRenderDrawColor(ren, 255, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderFillRect(ren, &birdRect);
+  }
   SDL_RenderCopy(ren, birdTexture, NULL, &birdRect);
 }
 

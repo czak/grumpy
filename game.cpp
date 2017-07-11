@@ -54,7 +54,7 @@ void Game::update() {
 void Game::render(Screen& screen) {
   screen.clear();
   screen.drawBackground(position);
-  screen.drawBird(x, y);
+  screen.drawBird(x, y, collision);
   for (auto o : obstacles) {
     screen.drawObstacle(o.x, o.numBricks, position);
   }

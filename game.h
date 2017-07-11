@@ -17,6 +17,7 @@ class Game {
 
   private:
     bool running = true;
+    bool collision = true;
     int position = 0;
     int x = 10;
     int y = 10;
