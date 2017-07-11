@@ -9,7 +9,7 @@ bool Screen::initialize() {
     return false;
   }
 
-  win = SDL_CreateWindow("Floppy", 1270, 690, 640, 360, SDL_WINDOW_SHOWN);
+  win = SDL_CreateWindow("Floppy", 1270, 810, 640, 360, SDL_WINDOW_SHOWN);
   if (win == nullptr) {
     return false;
   }
@@ -68,9 +68,12 @@ void Screen::drawBird(int x, int y) {
   SDL_RenderCopy(ren, birdTexture, NULL, &birdRect);
 }
 
-void Screen::drawObstacle(int x) {
-  const SDL_Rect rect {x, 100, 64, 32};
-  SDL_RenderCopy(ren, brickTexture, NULL, &rect);
+void Screen::drawObstacle(int x, int numBricks, int position) {
+  SDL_Rect rect { x - position, 360-48-32, 64, 32 };
+  for (int i = 0; i < numBricks; i++) {
+    SDL_RenderCopy(ren, brickTexture, NULL, &rect);
+    rect.y -= 30;
+  }
 }
 
 void Screen::present() {

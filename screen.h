@@ -8,7 +8,7 @@ class Screen {
     void clear();
     void drawBackground(int);
     void drawBird(int x, int y);
-    void drawObstacle(int x);
+    void drawObstacle(int x, int numBricks, int position);
     void present();
 
     const char* getError();

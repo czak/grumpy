@@ -37,7 +37,10 @@ void Game::render(Screen& screen) {
   screen.clear();
   screen.drawBackground(position);
   screen.drawBird(x, y);
-  screen.drawObstacle(200);
+  screen.drawObstacle(200, 3, position);
+  screen.drawObstacle(400, 5, position);
+  screen.drawObstacle(600, 4, position);
+  screen.drawObstacle(800, 7, position);
   screen.present();
 }
 
