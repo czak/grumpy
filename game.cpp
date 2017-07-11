@@ -49,6 +49,13 @@ void Game::update() {
     obstacles.pop_front();
     obstacles.push_back({ last.x + 200, std::rand() % 9 });
   }
+
+  // Check for collisions
+  collision = false;
+  first = obstacles.front();
+  if (x < (first.x + 64 - position) && x + 64 > first.x - position) {
+    collision = true;
+  }
 }
 
 void Game::render(Screen& screen) {
